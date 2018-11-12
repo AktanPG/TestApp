@@ -4,7 +4,7 @@ export const auth = history => async dispatch => {
     const token = window.localStorage.getItem('mplace-token');
 
     if(token === null) {
-        history.push('/form/login');
+        history.push('/login');
     } else {
         const res = await fetch('/api/auth/check', {
             headers: {

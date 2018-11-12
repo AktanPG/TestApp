@@ -9,6 +9,7 @@ import thunk from 'redux-thunk';
 
 import rootReducer from './store/reducers';
 import logger from './store/middleWares/logger';
+import classes from './index.css';
 
 const store = createStore(rootReducer, applyMiddleware(logger, thunk));
 window.store = store;

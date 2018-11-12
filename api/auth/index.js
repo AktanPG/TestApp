@@ -3,14 +3,14 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const helper = require('./authHelper');
 
-const User = require('../../db/models/user');
+const Users = require('../../db/models/user');
 
 router.post('/register', async(req, res) => {
     const {userName, email, password} = req.body;
 
     if(helper.checkName(userName, res, true) && helper.checkEmail(email, res, true) && helper.checkPassword(password, res, true)) {
         try {
-            const user = await User.findOne({email});
+            const user = await Users.findOne({email});
 
             if(!user) {
                 bcrypt.genSalt(10, (err, salt) => {
@@ -20,7 +20,7 @@ router.post('/register', async(req, res) => {
                         if(err) return console.log(err);
 
                         try {
-                            const newUser = await new User({userName, email, password: hash}).save();   
+                            const newUser = await new Users({userName, email, password: hash}).save();   
 
                             res.json({register: true});
                         } catch (error) {
@@ -45,7 +45,7 @@ router.post('/login', async(req, res) => {
 
     if(helper.checkEmail(email, res, false) && helper.checkPassword(password, res, false)) {
         try {
-            const user = await User.findOne({email});
+            const user = await Users.findOne({email});
         
             if(user) {
                 const isMatch = bcrypt.compareSync(password, user.password);

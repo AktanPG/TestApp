@@ -6,37 +6,36 @@ const offerSchema = new mongoose.Schema({
         required: true
     },
     images: {
-        type: [
-            ImageData
-        ]
+        type: Array,
+        default: []
     },
-    const: {
+    cost: {
         type: String,
         required: true
     },
-    constType: {
+    costType: {
         type: String,
         required: true
     },
-    Seller: {
+    seller: {
         type: String,
         required: true
     },
-    City: {
+    city: {
         type: String
     },
-    Phone: {
+    phone: {
         type: String,
         required: true
     },
     email: {
         type: String
     },
-    Date: {
+    date: {
         type: String,
         default: Date.now
     },
-    Looks: {
+    looks: {
         type: Number,
         default: 0 
     }

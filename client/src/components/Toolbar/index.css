@@ -1,0 +1,80 @@
+.Toolbar {
+    width: 100%;
+    background-color: #fff;
+    padding: 1rem 0;
+    position: fixed;
+    box-shadow: 0px 1px 2px #ccc;
+}
+
+.Container {
+    width: 1024px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+}
+
+.BrandName {
+    flex-basis: calc(1024px / 3);
+}
+
+.BrandName a {
+    font-size: 2rem;
+    font-family: var(--main-font);
+    text-decoration: none;
+    color: rgb(97, 97, 97);
+}
+
+.Navigation {
+    flex-basis: calc(1024px / 3 * 2);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.Navigation div {
+    margin: 0 1rem;
+}
+
+.AdaptiveToolbar {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.644);
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    top: 0;
+    left: 0;
+    transform: translateX(-100%);
+    transition: transform 0.5s;
+}
+
+.AdaptiveToolbar div {
+    margin: 1rem 0;
+}
+
+.BurgerButton {
+    display: none;
+    font-size: 1.5rem;
+}
+
+@media (max-width: 600px) {
+    .Navigation {
+        display: none;
+    }
+
+    .BurgerButton {
+        flex-basis: calc(1024px / 3 * 2);
+        display: flex;
+        justify-content: flex-end;
+    }
+}
+
+@media (max-width: 1024px) {
+    .Container {
+        width: 100%;
+        padding: 0 2rem;
+    }
+}
+

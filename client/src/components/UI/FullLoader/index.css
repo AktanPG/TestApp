@@ -1,0 +1,24 @@
+.FullLoader {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    z-index: 10000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+}
+
+.FullLoader span svg {
+    font-size: 4rem;
+    color: var(--main-color);
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    } to {
+        transform: rotate(360deg);
+    }
+}

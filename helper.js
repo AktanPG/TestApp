@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const multer = require('multer');
 
 module.exports.decodeJwt = function(token) {
     let res;
@@ -14,3 +15,12 @@ module.exports.decodeJwt = function(token) {
     
     return res;
 }
+
+const storage = multer.diskStorage({
+    destination: './public/uploads/',
+    filename: function(req, file, cb) {
+        cb(null, file.fieldname + '-' + Date.now() + "-" + file.originalname);
+    }
+});
+
+module.exports.multer = multer({storage});

@@ -56,8 +56,8 @@ router.post('/login', async(req, res) => {
                         require('../../config.json').jwtKey,
                         {expiresIn: 60 * 60 * (24 * 5)},
                         (err, token) => {
-                            if(err) return console.log(err);
-                            res.json({login: true, token});
+                            req.session.mplaceToken = token;
+                            res.json({login: true});
                         }
                     );
                 }
@@ -72,15 +72,17 @@ router.post('/login', async(req, res) => {
 });
 
 router.post('/check', (req, res) => {
-    const {token} = req.body;
-
-    jwt.verify(token, require('../../config.json').jwtKey, (err, payload) => {
-        if(err) {
-            res.json({auth: false});
-        } else {
-            res.json({auth: true});
-        }
-    });
+    if(req.session.mplaceToken) {
+        jwt.verify(req.session.mplaceToken, require('../../config.json').jwtKey, (err, payload) => {
+            if(err) {
+                res.json({auth: false});
+            } else {
+                res.json({auth: true});
+            }
+        });
+    } else {
+        res.json({auth: false});
+    }
 });
 
 module.exports = router;

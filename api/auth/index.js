@@ -2,13 +2,15 @@ const router = require('express').Router();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const helper = require('./authHelper');
+const nodemailer = require('nodemailer');
 
 const Users = require('../../db/models/user');
 
 router.post('/register', async(req, res) => {
     const {userName, email, password} = req.body;
 
-    if(helper.checkName(userName, res, true) && helper.checkEmail(email, res, true) && helper.checkPassword(password, res, true)) {
+    if(helper.checkName(userName, res, 'register') && 
+        helper.checkEmail(email, res, 'register') && helper.checkPassword(password, res, true)) {
         try {
             const user = await Users.findOne({email});
 
@@ -43,7 +45,7 @@ router.post('/register', async(req, res) => {
 router.post('/login', async(req, res) => {
     const { email, password } = req.body;
 
-    if(helper.checkEmail(email, res, false) && helper.checkPassword(password, res, false)) {
+    if(helper.checkEmail(email, res, 'login') && helper.checkPassword(password, res, 'login')) {
         try {
             const user = await Users.findOne({email});
         
@@ -60,6 +62,8 @@ router.post('/login', async(req, res) => {
                             res.json({login: true});
                         }
                     );
+                } else {
+                    res.json({login: false, massage: "Wrong password"})
                 }
             } else {
                 res.json({login: false, massage: "Email does not exist"});

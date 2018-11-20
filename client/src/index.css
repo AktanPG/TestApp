@@ -1,6 +1,9 @@
 :root {
   --main-color: rgb(228, 87, 87);
   --main-font: 'Righteous', cursive;
+  --comain-color: rgb(97, 97, 97);
+  --min-height: calc(100vh - 72px);
+  --comain-font: 'Roboto', sans-serif;
 }
 
 * {

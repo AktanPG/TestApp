@@ -1,3 +1,18 @@
+.Container {
+    background-color: #fafafa;
+    position: relative;
+    top: 72px;
+    width: 100%;
+}
+
 .Main {
-    top: calc(40px + 2rem);
+    width: 1024px;
+    min-height: var(--min-height);
+    margin: 0 auto;
+}
+
+@media (max-width: 1024px) {
+    .Main {
+        width: 100%;
+    }
 }

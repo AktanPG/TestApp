@@ -1,0 +1,78 @@
+.Shell {
+    width: 100%;
+    min-height: var(--min-height);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.Form {
+    width: 320px;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: #fff;
+    box-shadow: 0 0 5px 2px #ccc;
+    border-radius: 20px;
+}
+
+.Form h2 {
+    font-family: var(--main-font);
+    color: var(--comain-color);
+    margin: 1rem;
+}
+
+.Form input {
+    width: 100%;
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+    border-radius: 20px;
+    border: none;
+    background-color: rgba(228, 87, 87, 0.856);
+    color: #fff;
+    outline: none;
+    font-family: var(--main-font);
+    font-size: 1.1rem;
+    text-align: center;
+    -webkit-box-shadow: inset 0 0 0 50px var(--main-color);
+    -webkit-text-fill-color: #fff;
+}
+
+.Form input:focus {
+    background-color: var(--main-color);
+}
+
+.Form input::-webkit-input-placeholder {
+    color: #fff;
+}
+
+.SubmitButton {
+    margin: 1rem;
+}
+
+.ErrorArae {
+    font-family: var(--main-font);
+    text-align: center;
+    margin: 0.3rem 0;
+    color: rgba(255, 0, 0, 0.849);
+    font-weight: bold;
+}
+
+.Question {
+    display: flex;
+}
+
+.Question a {
+    margin: 0 0.6rem;
+    color: var(--main-color);
+    font-weight: bold;
+    text-decoration: none;
+    font-family: var(--main-font);
+    transition: opacity 0.3s;
+}
+
+.Question a:hover {
+    opacity: 0.8;
+}

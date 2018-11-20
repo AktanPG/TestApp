@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 
 import Layout from './hoc/Layout';
 import Register from './containers/Forms/Register';
+import Login from './containers/Forms/Login';
 
 class App extends Component {  
     render() {
@@ -11,7 +12,8 @@ class App extends Component {
                 <Switch>
                   <Route exact path="/" render={() => <h1>Aktan</h1>} />
                   <Route path="/register" component={Register} />
-                </Switch>
+                  <Route path="/login" component={Login} />
+                  </Switch>
             </Layout>  
         );      
     }

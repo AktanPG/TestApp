@@ -5,12 +5,12 @@ import classes from '../index.css';
 import withForm from '../../../hoc/withForm';
 import Button from '../../../components/UI/Button';
 
-class Register extends Component {
+class Login extends Component {
     render () {
         return (
             <div className={classes.Shell}>
                 <div className={classes.Form}>
-                    <h2>Sign Up</h2>
+                    <h2>Sign In</h2>
                     {
                         Object.keys(this.props.state.inputs)
                         .map(key => this.props.state.inputs[key])
@@ -37,10 +37,10 @@ class Register extends Component {
                         color="var(--comain-color)"
                         textColor="#fff"
                         givenClassName={classes.SubmitButton}
-                        clicked={() => this.props.submitHandler('register', '/api/auth/register')}
+                        clicked={() => this.props.submitHandler('login', '/api/auth/login')}
                     />
                     <div className={classes.Question}>
-                        <NavLink to="/login">already have an account</NavLink>
+                        <NavLink to="/register">No account</NavLink>
                     </div>
                 </div>
             </div>
@@ -49,11 +49,6 @@ class Register extends Component {
 }
 
 const inputs = {
-    userName: {
-        type: 'text',
-        value: '',
-        placeHolder: 'Name'
-    },
     email: {
         type: 'email',
         value: '',
@@ -66,4 +61,4 @@ const inputs = {
     }
 }
 
-export default withRouter(withForm(Register, inputs));
+export default withRouter(withForm(Login, inputs));

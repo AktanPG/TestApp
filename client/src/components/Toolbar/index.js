@@ -9,7 +9,7 @@ import Avatar from '../UI/Avatar';
 
 const Toolbar = props => {
     return (
-       <div className={classes.Toolbar}>
+       <div className={classes.Toolbar} style={{padding: !props.isScrolled ? '1rem' : '0.1rem 1rem'}}>
             <div className={classes.Container}>
                 <div className={classes.BrandName}>
                     <NavLink to="/">MPLace</NavLink> 
@@ -39,12 +39,16 @@ const Toolbar = props => {
                         transform: props.isOpenAdaptiveWindow ? 'translateX(0)' : 'translateX(-100%)' 
                     }}
                 >
-                    <Avatar
-                        width="100px"
-                        height="100px"
-                        border={true}   
-                        link="https://res.cloudinary.com/grami/image/upload/v1540820982/rgm4xppemxulnyvnsucm.webp"   
-                    />
+                    {
+                        props.isAuth ?
+                        <Avatar
+                            width="100px"
+                            height="100px"
+                            border={true}   
+                            link="https://res.cloudinary.com/grami/image/upload/v1540820982/rgm4xppemxulnyvnsucm.webp"   
+                        /> :
+                        null
+                    }
                     <Button 
                         value="CREATE" 
                         color="var(--main-color)"

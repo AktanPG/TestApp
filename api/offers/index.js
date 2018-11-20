@@ -77,7 +77,7 @@ router.post('/create', multer.array('images'), async(req, res) => {
 
 router.post('/remove', async(req, res) => {
     const {id} = req.body;
-
+    
     try {
         const removedOffer = await Offers.findByIdAndRemove(id);
 

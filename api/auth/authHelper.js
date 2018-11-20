@@ -1,25 +1,34 @@
 const providers = require('email-providers/common.json');
 
-module.exports.checkPassword = (password, res, isRegister) => {
-    if(password.length < 6) {
-        res.json({[isRegister ? 'register' : 'login'] : false, massage: "Password must be more 3 characters"});
+module.exports.checkPassword = (password, res, type) => {
+    if(password.length < 5) {
+        res.json({
+            [type === 'register' ? 'register' : 'login'] : 
+            false, massage: "Password must be more 6 characters"});
         return false;
     } 
     
     return true;
 }
 
-module.exports.checkEmail = (email, res, isRegister) => {
-    const provider = email.split('@')[1];
+module.exports.checkEmail = (email, res, type) => {
+    if(email.indexOf('@') > 0) {
+        const provider = email.split('@')[1];
     
-    for(let i = 0; i < providers.length; i++) {
-        if(providers[i] === provider) {
-            return true;
+        for(let i = 0; i < providers.length; i++) {
+            if(providers[i] === provider) {
+                return true;
+            }
         }
+        
+        if(type === 'register' || type === "login") {
+            res.json({[type === 'register' ? 'register' : 'login'] : false, massage: "Invalid email"});
+        } else {
+            res.json({remind: false, massage: 'Invalid email'});
+        }
+
+        return false;
     }
-    
-    res.json({[isRegister ? 'register' : 'login'] : false, massage: "Invalid email"});
-    return false;
 }
 
 module.exports.checkName = (userName, res, isRegister) => {

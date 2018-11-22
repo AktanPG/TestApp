@@ -4,6 +4,7 @@ import { NavLink, withRouter } from 'react-router-dom';
 import classes from '../index.css';
 import withForm from '../../../hoc/withForm';
 import Button from '../../../components/UI/Button';
+import ButtonLoader from '../../../components/UI/ButtonLoader';
 
 class Register extends Component {
     render () {
@@ -12,8 +13,8 @@ class Register extends Component {
                 <div className={classes.Form}>
                     <h2>Sign Up</h2>
                     {
-                        Object.keys(this.props.state.inputs)
-                        .map(key => this.props.state.inputs[key])
+                        Object.keys(this.props.inputs)
+                        .map(key => this.props.inputs[key])
                         .map((input, index) => {
                             return <input 
                                 type={input.type}
@@ -21,7 +22,7 @@ class Register extends Component {
                                 onChange={(e) => 
                                     this.props.inputHandler(
                                         e, 
-                                        Object.keys(this.props.state.inputs)[index]
+                                        Object.keys(this.props.inputs)[index]
                                     )
                                 }
                                 placeholder={input.placeHolder}    
@@ -37,8 +38,10 @@ class Register extends Component {
                         color="var(--comain-color)"
                         textColor="#fff"
                         givenClassName={classes.SubmitButton}
-                        clicked={() => this.props.submitHandler('register', '/api/auth/register')}
-                    />
+                        clicked={!this.props.loading ? () => this.props.submitHandler('register', '/api/auth/register') : null}
+                    >
+                        {this.props.loading ? <ButtonLoader /> : null}
+                    </Button>
                     <div className={classes.Question}>
                         <NavLink to="/login">already have an account</NavLink>
                     </div>

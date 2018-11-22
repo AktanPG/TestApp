@@ -12,6 +12,7 @@ const Button = props => (
         onClick={props.clicked ? props.clicked : null}    
     >
         {props.value}
+        {props.children}
     </div>
 );
 

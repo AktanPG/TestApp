@@ -11,7 +11,7 @@ export const auth = history => async dispatch => {
 
     if(data.auth) dispatch({type: consts.AUTH_TRUE});
     else {
-        history.push('/register');
+        history.push('/login');
         dispatch({type: consts.AUTH_FALSE});
     }
 }

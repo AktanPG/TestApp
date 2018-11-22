@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 const withForm = (WrappedComponent, inputs) => class withForm extends Component {
     state = {
         inputs: inputs,
-        error: null
+        error: null,
+        loading: false
     }
 
     inputHandler = (e, key) => {
@@ -13,6 +14,8 @@ const withForm = (WrappedComponent, inputs) => class withForm extends Component 
     }
 
     onSubmit = async(type, src) => {
+        this.setState({loading: true});
+
         const data = {}
         
         Object.keys(this.state.inputs)
@@ -30,24 +33,31 @@ const withForm = (WrappedComponent, inputs) => class withForm extends Component 
             const resData = await response.json();
 
             if(resData[type]) {
-                if(type === 'login') this.props.history.push('/');
+                
+                if(type === 'login') {
+                    this.props.auth(this.props.history);
+                    this.props.history.push('/');
+                }
                 else this.props.history.push('/login');        
+            
             } else {
                 this.setState({error: resData.massage});
             }
 
+            this.setState({loading: false});
         } catch (error) {
             console.log(error);
-            this.setState({error: 'Error, Try again later'})
+            this.setState({error: 'Error, Try again later', loading: false});
         }
     }
 
     render ()  {
         return <WrappedComponent 
             {...this.props}
-            state={this.state}
             inputHandler={this.inputHandler}
             error={this.state.error}
+            loading={this.state.loading}
+            inputs={this.state.inputs}
             submitHandler={this.onSubmit}
         />
     }

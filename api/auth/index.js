@@ -54,11 +54,11 @@ router.post('/login', async(req, res) => {
 
                 if(isMatch) {
                     jwt.sign(
-                        {id: user._id, userName: user.userName},
+                        {id: user._id, userName: user.userName, email: user.email},
                         require('../../config.json').jwtKey,
                         {expiresIn: 60 * 60 * (24 * 5)},
                         (err, token) => {
-                            req.session.mplaceToken = token;
+                            res.cookie.mplaceToken = token;
                             res.json({login: true});
                         }
                     );
@@ -76,8 +76,9 @@ router.post('/login', async(req, res) => {
 });
 
 router.post('/check', (req, res) => {
-    if(req.session.mplaceToken) {
-        jwt.verify(req.session.mplaceToken, require('../../config.json').jwtKey, (err, payload) => {
+    if(res.cookie.mplaceToken) {
+        jwt.verify(res.cookie.mplaceToken, 
+                require('../../config.json').jwtKey, (err, payload) => {
             if(err) {
                 res.json({auth: false});
             } else {

@@ -14,17 +14,24 @@ class Layout extends Component {
         isScrolled: false
     }
 
+    scroll = (e) => {
+        if(window.scrollY > 100) {
+            this.setState({isScrolled: true})
+        } else {
+            this.setState({isScrolled: false})
+        }
+    }
+
     componentDidMount() {
         this.props.auth(this.props.history);
 
-        document.addEventListener('scroll', (e) => {
-            if(window.scrollY > 100) {
-                this.setState({isScrolled: true})
-            } else {
-                this.setState({isScrolled: false})
-            }
-        });
+        document.addEventListener('scroll', this.scroll);
     }
+
+    componentWillUnmount() {
+        document.removeEventListener('scroll', this.scroll);
+    }
+    
 
     openAdaptiveWindowHandler = () => {
         this.setState({isOpenAdaptiveWindow: true});
@@ -34,6 +41,8 @@ class Layout extends Component {
         this.setState({isOpenAdaptiveWindow: false});
     }
 
+    redirectToHandler = (path) => this.props.history.push('/' + path);
+
     render () {
         let output = <FullLoader />; 
 
@@ -41,6 +50,7 @@ class Layout extends Component {
             output = (
                 <React.Fragment>
                     <Toolbar 
+                        redirectTo={this.redirectToHandler}
                         isScrolled={this.state.isScrolled}
                         isAuth={this.props.isAuth}
                         openAdaptiveWindow={this.openAdaptiveWindowHandler}

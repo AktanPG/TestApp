@@ -6,7 +6,7 @@ module.exports.checkPassword = (password, res, type) => {
             [type === 'register' ? 'register' : 'login'] : 
             false, massage: "Password must be more 6 characters"});
         return false;
-    } 
+    }   
     
     return true;
 }
@@ -20,13 +20,13 @@ module.exports.checkEmail = (email, res, type) => {
                 return true;
             }
         }
-        
-        if(type === 'register' || type === "login") {
-            res.json({[type === 'register' ? 'register' : 'login'] : false, massage: "Invalid email"});
-        } else {
-            res.json({remind: false, massage: 'Invalid email'});
-        }
 
+        res.json({[type === 'register' ? 'register' : 'login'] : false, massage: "Invalid email"});
+
+        return false;
+    } else {
+        res.json({[type === 'register' ? 'register' : 'login'] : false, massage: "Invalid email"});
+    
         return false;
     }
 }

@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import { NavLink, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { auth } from '../../../store/actions/auth';
 
 import classes from '../index.css';
 import withForm from '../../../hoc/withForm';
 import Button from '../../../components/UI/Button';
+import ButtonLoader from '../../../components/UI/ButtonLoader';
 
 class Login extends Component {
     render () {
@@ -12,8 +15,8 @@ class Login extends Component {
                 <div className={classes.Form}>
                     <h2>Sign In</h2>
                     {
-                        Object.keys(this.props.state.inputs)
-                        .map(key => this.props.state.inputs[key])
+                        Object.keys(this.props.inputs)
+                        .map(key => this.props.inputs[key])
                         .map((input, index) => {
                             return <input 
                                 type={input.type}
@@ -21,7 +24,7 @@ class Login extends Component {
                                 onChange={(e) => 
                                     this.props.inputHandler(
                                         e, 
-                                        Object.keys(this.props.state.inputs)[index]
+                                        Object.keys(this.props.inputs)[index]
                                     )
                                 }
                                 placeholder={input.placeHolder}    
@@ -37,8 +40,10 @@ class Login extends Component {
                         color="var(--comain-color)"
                         textColor="#fff"
                         givenClassName={classes.SubmitButton}
-                        clicked={() => this.props.submitHandler('login', '/api/auth/login')}
-                    />
+                        clicked={!this.props.loading ? () => this.props.submitHandler('login', '/api/auth/login') : null}
+                    >
+                        {this.props.loading ? <ButtonLoader /> : null}
+                    </Button>
                     <div className={classes.Question}>
                         <NavLink to="/register">No account</NavLink>
                     </div>
@@ -61,4 +66,4 @@ const inputs = {
     }
 }
 
-export default withRouter(withForm(Login, inputs));
+export default withRouter(connect(null, {auth})(withForm(Login, inputs)));

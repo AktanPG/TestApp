@@ -10,12 +10,9 @@ const offerSchema = new mongoose.Schema({
         default: []
     },
     cost: {
-        type: String,
-        required: true
-    },
-    costType: {
-        type: String,
-        required: true
+        type: Number,
+        required: true,
+        default: 0
     },
     seller: {
         type: String,
@@ -28,9 +25,6 @@ const offerSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    email: {
-        type: String
-    },
     date: {
         type: String,
         default: Date.now
@@ -38,6 +32,14 @@ const offerSchema = new mongoose.Schema({
     looks: {
         type: Number,
         default: 0 
+    },
+    description: {
+        type: String,
+        required: true
+    },
+    title: {
+        type: String,
+        required: true
     }
 });
 

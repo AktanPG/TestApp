@@ -1,16 +1,12 @@
 const express = require('express');
-const session = require('express-session');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 require('./db').connect();
 
+app.use(cookieParser());
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
-app.use(session({
-    secret: 'mplace-session',
-    resave: false,
-    saveUninitialized: true
-}));
 
 app.use('/api/auth', require('./api/auth'));
 app.use('/api/offers', require('./api/offers'));

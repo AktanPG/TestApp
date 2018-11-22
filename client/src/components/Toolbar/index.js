@@ -18,6 +18,7 @@ const Toolbar = props => {
                     {
                         props.isAuth ?
                         <Avatar
+                            clicked={() => props.redirectTo('profile')}
                             border={true}   
                             link="https://res.cloudinary.com/grami/image/upload/v1540820982/rgm4xppemxulnyvnsucm.webp"   
                         /> : 
@@ -27,6 +28,7 @@ const Toolbar = props => {
                         value="CREATE" 
                         color="var(--main-color)"
                         textColor="#fff"  
+                        clicked={() => props.redirectTo('create')}
                     />
                 </div>
                 <div className={classes.BurgerButton}>
@@ -42,6 +44,7 @@ const Toolbar = props => {
                     {
                         props.isAuth ?
                         <Avatar
+                            clicked={() => props.redirectTo('profile')}
                             width="100px"
                             height="100px"
                             border={true}   
@@ -53,6 +56,7 @@ const Toolbar = props => {
                         value="CREATE" 
                         color="var(--main-color)"
                         textColor="#fff"  
+                        clicked={() => props.redirectTo('create')}
                     />        
                 </div>
             </div>

@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const Icon = props => (
     <span
         onClick={props.clicked ? props.clicked : null}
-        className={props.classTo ? props.classTo :null}
+        className={props.givenClassName ? props.givenClassName :null}
     >   
         <FontAwesomeIcon 
             icon={props.icon}

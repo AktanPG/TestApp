@@ -4,6 +4,11 @@
     font-family: var(--main-font);
     cursor: pointer;
     transition: box-shadow 0.3s;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
 }
 
 .Button:hover {

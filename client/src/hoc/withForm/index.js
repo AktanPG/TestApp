@@ -36,15 +36,20 @@ const withForm = (WrappedComponent, inputs) => class withForm extends Component 
                 
                 if(type === 'login') {
                     this.props.auth(this.props.history);
-                    this.props.history.push('/');
+                    
+                    this.setState({loading: false}, () => {
+                        this.props.history.push('/');
+                    });
                 }
-                else this.props.history.push('/login');        
+                else {
+                    this.setState({loading: false}, () => {
+                        this.props.history.push('/login');
+                    });
+                }        
             
             } else {
-                this.setState({error: resData.massage});
+                this.setState({error: resData.massage, loading: false});
             }
-
-            this.setState({loading: false});
         } catch (error) {
             console.log(error);
             this.setState({error: 'Error, Try again later', loading: false});

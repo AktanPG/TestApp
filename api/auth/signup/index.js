@@ -51,13 +51,13 @@ router.post('/', async(req, res) => {
                 }
 
             } else {
-                res.status(401).json({signup: false, massage: 'Name must be at least 5 characters'});
+                res.json({signup: false, massage: 'Name must be at least 5 characters'});
             }
         } else {
-            res.status(401).json({signup: false, massage: 'Password must be at least 6 characters'});
+            res.json({signup: false, massage: 'Password must be at least 6 characters'});
         }
     } else {
-        res.status(401).json({signup: false, massage: 'Invalid email address'})
+        res.json({signup: false, massage: 'Invalid email address'})
     }
 });
 

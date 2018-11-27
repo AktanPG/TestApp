@@ -38,11 +38,11 @@ router.post('/', async(req, res) => {
 
                         res.status(200).json({login: true});
                     } else {
-                        res.status(401).json({login: false, massage: "Incorrect password"});
+                        res.json({login: false, massage: "Incorrect password"});
                     }
 
                 } else {
-                    res.status(404).json({
+                    res.json({
                         login: false,
                         massage: 'Email does not exist'
                     });
@@ -53,10 +53,10 @@ router.post('/', async(req, res) => {
             }
 
         } else {
-            res.status(401).json({login: false, massage: 'Password must be at least 6 characters'});
+            res.json({login: false, massage: 'Password must be at least 6 characters'});
         }
     } else {
-        res.status(401).json({login: false, massage: 'Invalid email address'})
+        res.json({login: false, massage: 'Invalid email address'})
     }
 });
 

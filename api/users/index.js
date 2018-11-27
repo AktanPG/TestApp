@@ -5,16 +5,23 @@ const fs = require('fs');
 const Users = require('../../db/models/user');
 const { decodeJwt, multer } = require('../../helper');
 
+
+//Route for send profile
 router.post('/profile', async(req, res) => {
 
+    // decode JWT and get payload
     const payload = decodeJwt(req.session.token);
-
+    
+    // check payload
     if(payload) {
        
+        //Handle errors
         try {
 
+            //Get profile from DB
             const profile = await Users.findById(payload.id);
 
+            //Check for existence
             if(profile) {
                 res.status(200).json({profile: {
                     name: profile.name,
@@ -23,7 +30,7 @@ router.post('/profile', async(req, res) => {
                     id: profile._id
                 }});
             } else {
-                res.status(404).json({
+                res.json({
                     profile: false, 
                     massage: 'Not found'
                 });
@@ -32,36 +39,42 @@ router.post('/profile', async(req, res) => {
         } catch (error) {
             console.log(error);
             
-            res.status(500).json({profile: false, error: true});
+            res.json({profile: false, error: true});
         }
 
     } else {
-        res.status(401).json({profile: false, massage: 'Token expired'});
+        res.json({profile: false, massage: 'Token expired'});
     }
     
 });
 
+//Route to change profile`s avatar
 router.post('/avatar', multer.single('avatar'), (req, res) => {
+    // Cloudinary config
     cloudinary.config({
         cloud_name: 'grami',
         api_key: '966272348285316',
         api_secret: 'gqvP_uCAQXVYf79PwcwXGrdr5yk'
     });
 
+    //Connect and upload image to cloud
     cloudinary.v2.uploader.upload('public/uploads/' + req.file.filename, (err, result) => {
         if(err) {
-            res.status(500).json({avatar: false});
+            res.json({avatar: false});
         } else {
+            //Remove image from public/uploads
             fs.unlinkSync('public/uploads/' + req.file.filename);
 
+            //Decode and get id from payload
             const id = decodeJwt(req.session.token).id;
 
+            //Update profile avatar`s src
             Users.findByIdAndUpdate(id, {$set: {avatar: result.secure_url}})
                 .then(updated => {
                     res.status(200).json({avatar: result.secure_url});
                 })
                 .catch(error => {
-                    res.status(500).json({avatar: false});
+                    res.json({avatar: false});
                 });
         }
     });

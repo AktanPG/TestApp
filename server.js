@@ -37,4 +37,4 @@ app.get('*', (req, res) => {
 
 const port = process.env.PORT || 5000;
 
-app.listen(port, function() { console.log('__[ Server started ]__') });
+app.listen(port, function() { console.log(`__[ Server started on port ${port} ]__`) });

@@ -5,7 +5,7 @@ const nodemailer = require('nodemailer');
 
 const Users = require('../../db/models/user');
 const Validator = require('./Validator');
-
+const { unexpectedError } = require('./helper');
 
 router.post('/register', async(req, res) => {
     const { email, password, name } = req.body;
@@ -14,16 +14,27 @@ router.post('/register', async(req, res) => {
         if(Validator.init(password).LengthMore(5)) {
             if(Validator.init(name).LengthMore(4)) {
                 
-                const user = await Users.findOne({email});
+                try {
+                    const user = await Users.findOne({email});
                 
-                if(user) {
-                   return res.status(412).json({signup: false, massage: "Email already exist"}); 
-                }
+                    if(user) {
+                        return res.status(412).json({
+                            signup: false, massage: "Email already exist"
+                        }); 
+                    }
 
-                const salt = bcrypt.genSaltSync(20);
-                const hashedPassword = bcrypt.hashSync(salt, password);
-                
-                
+                    const salt = bcrypt.genSaltSync(20);
+                    const hashedPassword = bcrypt.hashSync(salt, password);
+
+                    try {
+                        
+                    } catch (error) {
+                        unexpectedError(res, error);    
+                    }
+
+                } catch (error) {
+                    unexpectedError(res, error);
+                }
 
             } else {
                 res.status(401).json({signup: false, massage: 'Name must be at least 5 characters'});

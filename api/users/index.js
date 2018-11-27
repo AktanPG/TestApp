@@ -7,7 +7,7 @@ const { decodeJwt } = require('../../helper');
 
 router.post('/profile', async(req, res) => {
     
-    const payload = decodeJwt(req.body.token);
+    const payload = decodeJwt(req.session.token);
 
     if(payload) {
        

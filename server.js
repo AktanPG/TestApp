@@ -9,11 +9,11 @@ app.use(cookieParser());
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 
-session({
+app.use(session({
     secret: 'SECRET',
     resave: false,
-    saveUninitialized: false
-});
+    saveUninitialized: true
+}));
 
 app.use('/api/auth/signup', require('./api/auth/signup/index'));
 app.use('/api/auth/login', require('./api/auth/login/index'));

@@ -25,7 +25,9 @@ router.post('/', async(req, res) => {
 
                         const token = createToken({id: user._id});
 
-                        res.status(200).json({login: true, token});
+                        req.session.token = token;
+
+                        res.status(200).json({login: true});
 
                     } else {
                         res.status(401).json({login: false, massage: "Incorrect password"});
@@ -54,7 +56,7 @@ router.post('/check', async(req, res) => {
 
     const key = JSON.parse(fs.readFileSync('private.key')).jwt;
 
-    jwt.verify(req.body.token, key, (err, payload) => {
+    jwt.verify(req.session.token, key, (err, payload) => {
         if(err) {
             return res.status(401).json({check: false});
         }

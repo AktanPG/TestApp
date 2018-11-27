@@ -1,7 +1,7 @@
 import * as consts from '../consts';
 
 export const auth = history => async dispatch => {
-    const res = await fetch('/api/auth/check', {
+    const res = await fetch('/api/auth/login/check', {
         headers: {
             'Content-Type': 'application/json'
         },

@@ -1,92 +1,38 @@
 const router = require('express').Router();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const helper = require('./authHelper');
 const nodemailer = require('nodemailer');
 
 const Users = require('../../db/models/user');
+const Validator = require('./Validator');
+
 
 router.post('/register', async(req, res) => {
-    const {userName, email, password} = req.body;
+    const { email, password, name } = req.body;
 
-    if(helper.checkName(userName, res, 'register') && 
-        helper.checkEmail(email, res, 'register') && helper.checkPassword(password, res, true)) {
-        try {
-            const user = await Users.findOne({email});
-
-            if(!user) {
-                bcrypt.genSalt(10, (err, salt) => {
-                    if(err) return console.log(err);
-
-                    bcrypt.hash(password, salt, async function(err, hash) {
-                        if(err) return console.log(err);
-
-                        try {
-                            const newUser = await new Users({userName, email, password: hash}).save();   
-
-                            res.json({register: true});
-                        } catch (error) {
-                            console.log(error);
-                            res.json({register: false, massage: "Something went wrong. Please try again later"});
-                        }
-
-                    });
-                });
-            } else {
-                res.json({register: false, massage: "Email already exist"});
-            }
-        } catch (error) {
-            console.log(error);
-            res.json({register: false, massage: "Something went wrong. Please try again later"});
-        }
-    }
-});
-
-router.post('/login', async(req, res) => {
-    const { email, password } = req.body;
-
-    if(helper.checkEmail(email, res, 'login') && helper.checkPassword(password, res, 'login')) {
-        try {
-            const user = await Users.findOne({email});
-        
-            if(user) {
-                const isMatch = bcrypt.compareSync(password, user.password);
-
-                if(isMatch) {
-                    jwt.sign(
-                        {id: user._id, userName: user.userName, email: user.email},
-                        require('../../config.json').jwtKey,
-                        {expiresIn: 60 * 60 * (24 * 5)},
-                        (err, token) => {
-                            res.cookie.mplaceToken = token;
-                            res.json({login: true});
-                        }
-                    );
-                } else {
-                    res.json({login: false, massage: "Wrong password"})
+    if(Validator.init(email).isEmail().LengthMore(0)) {
+        if(Validator.init(password).LengthMore(5)) {
+            if(Validator.init(name).LengthMore(4)) {
+                
+                const user = await Users.findOne({email});
+                
+                if(user) {
+                   return res.status(412).json({signup: false, massage: "Email already exist"}); 
                 }
-            } else {
-                res.json({login: false, massage: "Email does not exist"});
-            }
-        } catch (error) {
-            console.log(error);
-            res.json({login: false, massage: "Something went wrong. Please try again later"});
-        }
-    } 
-});
 
-router.post('/check', (req, res) => {
-    if(res.cookie.mplaceToken) {
-        jwt.verify(res.cookie.mplaceToken, 
-                require('../../config.json').jwtKey, (err, payload) => {
-            if(err) {
-                res.json({auth: false});
+                const salt = bcrypt.genSaltSync(20);
+                const hashedPassword = bcrypt.hashSync(salt, password);
+                
+                
+
             } else {
-                res.json({auth: true});
+                res.status(401).json({signup: false, massage: 'Name must be at least 5 characters'});
             }
-        });
+        } else {
+            res.status(401).json({signup: false, massage: 'Password must be at least 6 characters'});
+        }
     } else {
-        res.json({auth: false});
+        res.status(401).json({signup: false, massage: 'Invalid email address'})
     }
 });
 

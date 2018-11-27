@@ -1,49 +1,73 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getProfile } from '../../store/actions/profile';
+import { getProfile, changeAvatar } from '../../store/actions/profile';
+import { auth } from '../../store/actions/auth';
+import axios from 'axios';
 
 import classes from './index.css';
 import FullLoader from '../../components/UI/FullLoader';
 import Avatar from '../../components/UI/Avatar';
 
 class Profile extends Component {
+
+    constructor (props) {
+        super(props);
+
+        this.form = React.createRef();
+    }
+
     componentDidMount() {
-        const id = this.props.location.pathname.split('/')[2];
-        
-        if(this.props.profile === null) {
-            if(id) this.props.getProfile(id);
-            else this.props.getProfile();
-        }
+        this.props.getProfile();
     }
     
+    inputHandler = (e) => {
+        if(e.target.files[0] && e.target.files[0].size < 20000) {
+
+            const fd = new FormData(this.form.current); 
+            
+            this.props.changeAvatar(fd);
+        }
+    }
+
+    logout = () => {
+        axios.post('/api/auth/logout')
+            .then(res => {
+                if(res.data.logout) {
+                    this.props.auth(this.props.history)
+                }
+            });
+    }
+
     render () {
         return (
             <div className={classes.Container}>
+                { !this.props.avatarLoading ? 
+                    <form method="POST" encType="multipart/form-data" ref={this.form}>
+                        <input 
+                            onInput={this.inputHandler}
+                            name="avatar"
+                            type="file"
+                            id="image"
+                            accept="image/jpeg, image/png, image/jpg"
+                        />
+                    </form> : null      
+                }   
                 {
-                    this.props.loading ? 
-                    <FullLoader givenClassName={classes.Loader}/> :
+                    this.props.loading ?
+                    <FullLoader /> :
                     <div className={classes.Profile}>
-                        <form method="POST" encType="multipart/form-data">
-                            <input type="file" id="avatar" accept="image/jpeg, images/jpg, image/png"/>
-                        </form>
-                        <header 
-                            className={classes.Header}
-                            style={{
-                                background: `url('https://vignette.wikia.nocookie.net/moistmeme/images/b/b7/Void.jpg/revision/latest?cb=20150703045152')`,
-                                backgroundSize: 'cover',
-                                backgroundPosition: 'center center',
-                                backgroundAttachment: 'scroll'
-                            }}    
-                        >
-                            <label htmlFor="avatar">
-                                <Avatar 
-                                    link={this.props.profile.avatar} 
-                                    size="100px"
-                                    border={true} 
-                                />
-                            </label>
-                            <div className={classes.UserName}>{this.props.profile.userName}</div>
-                        </header>
+                        <label htmlFor="image">
+                            <Avatar 
+                                link={this.props.profile.avatar}
+                                size="100px"
+                                active={this.props.avatarLoading}
+                            />
+                        </label>
+                        <div className={classes.About}>
+                            <div className={classes.Name}>{this.props.profile.name}</div>
+                            <div className={classes.Email}>{this.props.profile.email}</div>
+                            <div className={classes.Logout} onClick={this.logout}>Logout</div>
+                        </div>
                     </div>
                 }
             </div>
@@ -53,5 +77,6 @@ class Profile extends Component {
 
 export default connect(state => ({
     profile: state.profileState.profile,
-    loading: state.profileState.loading
-}), { getProfile })(Profile);
+    loading: state.profileState.loading,
+    avatarLoading: state.profileState.avatarLoading
+}), { getProfile, changeAvatar, auth })(Profile);

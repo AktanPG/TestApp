@@ -11,11 +11,9 @@ class App extends Component {
         return (
             <Layout>
                 <Switch>
-                  <Route exact path="/" render={() => <h1>MainPage</h1>} />
+                  <Route exact path="/" component={Profile} />
                   <Route path="/register" component={Registration} />
-                  {/* <Route path="/register" component={Register} />
                   <Route path="/login" component={Login} />
-                  <Route path="/profile" component={Profile} /> */}
                 </Switch>
             </Layout>  
         );      

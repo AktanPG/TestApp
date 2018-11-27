@@ -1,12 +1,12 @@
 const router = require('express').Router();
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
+const cloudinary = require('cloudinary');
+const fs = require('fs');
 
 const Users = require('../../db/models/user');
-const { decodeJwt } = require('../../helper');
+const { decodeJwt, multer } = require('../../helper');
 
 router.post('/profile', async(req, res) => {
-    
+
     const payload = decodeJwt(req.session.token);
 
     if(payload) {
@@ -39,6 +39,32 @@ router.post('/profile', async(req, res) => {
         res.status(401).json({profile: false, massage: 'Token expired'});
     }
     
+});
+
+router.post('/avatar', multer.single('avatar'), (req, res) => {
+    cloudinary.config({
+        cloud_name: 'grami',
+        api_key: '966272348285316',
+        api_secret: 'gqvP_uCAQXVYf79PwcwXGrdr5yk'
+    });
+
+    cloudinary.v2.uploader.upload('public/uploads/' + req.file.filename, (err, result) => {
+        if(err) {
+            res.status(500).json({avatar: false});
+        } else {
+            fs.unlinkSync('public/uploads/' + req.file.filename);
+
+            const id = decodeJwt(req.session.token).id;
+
+            Users.findByIdAndUpdate(id, {$set: {avatar: result.secure_url}})
+                .then(updated => {
+                    res.status(200).json({avatar: result.secure_url});
+                })
+                .catch(error => {
+                    res.status(500).json({avatar: false});
+                });
+        }
+    });
 });
 
 module.exports = router;

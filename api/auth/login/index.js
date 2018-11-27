@@ -7,28 +7,36 @@ const Users = require('../../../db/models/user');
 const Validator = require('../Validator');
 const { unexpectedError, createToken } = require('../helper');
 
+// Login
+
 router.post('/', async(req, res) => {
     const { email, password } = req.body;
 
+    // Validation
     if(Validator.init(email).isEmail()) {
         if(Validator.init(password).LengthMore(5)) {
-            
+            // Handle errors with try - catch
             try {
                 
+                //Get user from DB
                 const user = await Users.findOne({email});
 
+                //Check for existence 
                 if(email) {
 
+                    // Compare hashed password with inputed password
                     const isMatch = bcrypt.compareSync(password, user.password);
 
+                    //Check
                     if(isMatch) {
 
+                        //Create token with payload
                         const token = createToken({id: user._id});
 
+                        //Save to sessions
                         req.session.token = token;
 
                         res.status(200).json({login: true});
-
                     } else {
                         res.status(401).json({login: false, massage: "Incorrect password"});
                     }
@@ -50,20 +58,6 @@ router.post('/', async(req, res) => {
     } else {
         res.status(401).json({login: false, massage: 'Invalid email address'})
     }
-});
-
-router.post('/check', async(req, res) => {
-
-    const key = JSON.parse(fs.readFileSync('private.key')).jwt;
-
-    jwt.verify(req.session.token, key, (err, payload) => {
-        if(err) {
-            return res.status(401).json({check: false});
-        }
-
-        res.status(200).json({check: true})
-    });
-
 });
 
 module.exports = router;

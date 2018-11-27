@@ -1,6 +1,8 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+
+// component to render Font awesome icons
 const Icon = props => (
     <span
         onClick={props.clicked ? props.clicked : null}

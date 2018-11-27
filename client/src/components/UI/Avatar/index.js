@@ -1,11 +1,17 @@
 import React from 'react';
+import ButtonLoader from '../ButtonLoader';
 
+
+//Component to render circle avatar
 const Avatar = props => (
     <div 
         style={{
-            background: `url(${props.link})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center center',
+            overflow: 'hidden',
+            position: 'relative',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            background: `url(${props.link}) center center / cover`,
             width: props.size ? props.size : '35px',
             height: props.size ? props.size : '35px',
             cursor: 'pointer',
@@ -14,6 +20,7 @@ const Avatar = props => (
         }}
         onClick={props.clicked ? props.clicked : null}
     >
+        {props.active ? <ButtonLoader /> : null}
     </div>
 )
 

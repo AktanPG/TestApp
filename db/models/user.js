@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+//mongoose`s schema for users collection
+
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -17,6 +19,9 @@ const userSchema = new mongoose.Schema({
     avatar: {
         type: String,
         default: "https://res.cloudinary.com/grami/image/upload/v1540820982/rgm4xppemxulnyvnsucm.webp"
+    },
+    publicId: {
+        type: String
     }
 });
 

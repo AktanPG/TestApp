@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+//High order component to dont repeat form logic
+
 const withForm = (WrappedComponent, inputs) => class withForm extends Component {
     state = {
         inputs: inputs,
@@ -8,63 +10,61 @@ const withForm = (WrappedComponent, inputs) => class withForm extends Component 
     }
 
     inputHandler = (e, key) => {
+
         const inputs = {...this.state.inputs};
+
         inputs[key].value = e.target.value;
+
         this.setState({inputs});
-    }
+    
+    } 
 
-    onSubmit = async(type, src) => {
-        this.setState({loading: true});
+    submit = (type, path) => {
 
-        const data = {}
+        this.setState({loading: true}, () => {
+            
+            const data = {}
         
-        Object.keys(this.state.inputs)
-        .map((key) => data[key] = this.state.inputs[key].value);
+            Object.keys(this.state.inputs).map(key => data[key] = this.state.inputs[key].value);
 
-        try {
-            const header = {
+            fetch(type === 'signup' ? '/api/auth/signup' : '/api/auth/login', {
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 method: 'POST',
                 body: JSON.stringify(data)
-            }
-            const response = await fetch(src, header);
-            const resData = await response.json();
+            })
+                .then(res => {
+                    return res.json();
+                })
+                .then(resData => {
 
-            if(resData[type]) {
-                
-                if(type === 'login') {
-                    this.props.auth(this.props.history);
-                    
-                    window.localStorage.setItem('mplace-token', resData.token);
-                    this.setState({loading: false}, () => {
-                        this.props.history.push('/');
-                    });
-                }
-                else {
-                    this.setState({loading: false}, () => {
-                        this.props.history.push('/login');
-                    });
-                }        
-            
-            } else {
-                this.setState({error: resData.massage, loading: false});
-            }
-        } catch (error) {
-            console.log(error);
-            this.setState({error: 'Error, Try again later', loading: false});
-        }
+                    if(resData[type]) { 
+                        this.setState({loading: false}, () => {
+                            this.props.history.push(path);
+                        });
+                    } else {
+                        this.setState({loading: false, error: resData.massage});
+                    }
+
+                })
+                .catch(error => {
+                    console.log(error);
+                    this.setState({error, loading: false});
+                });
+
+        });
+
     }
 
     render ()  {
         return <WrappedComponent 
             {...this.props}
+            submit={this.submit}
+            inputs={this.state.inputs}
             inputHandler={this.inputHandler}
             error={this.state.error}
             loading={this.state.loading}
-            inputs={this.state.inputs}
-            submitHandler={this.onSubmit}
         />
     }
 }

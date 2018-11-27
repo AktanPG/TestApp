@@ -30,11 +30,11 @@ export const getProfile = (id = null) => async(dispatch) => {
     } catch(error) {
 
         //handle error
-        console.log(error);
         dispatch({type: consts.GET_PROFILE_FALSE});
     }
 };
 
+//Same actionCreator like above
 export const changeAvatar = formData => dispatch => {
 
     dispatch({type: consts.CHANGE_AVATAR_START});
@@ -53,7 +53,6 @@ export const changeAvatar = formData => dispatch => {
         }
     })
     .catch(error => {
-        console.log(error);
         dispatch({
             type: consts.CHANGE_AVATAR_FALSE
         });

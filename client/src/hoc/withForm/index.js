@@ -49,7 +49,6 @@ const withForm = (WrappedComponent, inputs) => class withForm extends Component 
 
                 })
                 .catch(error => {
-                    console.log(error);
                     this.setState({error, loading: false});
                 });
 

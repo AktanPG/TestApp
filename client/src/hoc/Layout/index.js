@@ -41,7 +41,9 @@ class Layout extends Component {
         this.setState({isOpenAdaptiveWindow: false});
     }
 
-    redirectToHandler = (path) => this.props.history.push('/' + path);
+    redirectToHandler = (path) => {
+        this.props.history.push('/' + path);
+    };
 
     render () {
         let output = <FullLoader />; 
@@ -72,5 +74,6 @@ class Layout extends Component {
 
 export default connect(state => ({
     isAuth: state.authState.auth,
-    loading: state.authState.loading
-}), {auth})(withRouter(Layout));
+    loading: state.authState.loading,
+    profile: state.profileState.profile
+}), { auth })(withRouter(Layout));

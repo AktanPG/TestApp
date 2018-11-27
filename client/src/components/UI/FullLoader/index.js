@@ -4,8 +4,8 @@ import { faSpinner } from '@fortawesome/free-solid-svg-icons';
 import classes from './index.css';
 import Icon from '../Icon';
 
-const FullLoader = () => (
-    <div className={classes.FullLoader}>
+const FullLoader = (props) => (
+    <div className={[classes.FullLoader, props.givenClassName ? props.givenClassName : ''].join(' ')}>
         <Icon icon={faSpinner}/>
     </div>
 );

@@ -37,6 +37,7 @@ const withForm = (WrappedComponent, inputs) => class withForm extends Component 
                 if(type === 'login') {
                     this.props.auth(this.props.history);
                     
+                    window.localStorage.setItem('mplace-token', resData.token);
                     this.setState({loading: false}, () => {
                         this.props.history.push('/');
                     });

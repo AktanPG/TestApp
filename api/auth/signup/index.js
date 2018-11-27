@@ -1,16 +1,15 @@
 const router = require('express').Router();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-const nodemailer = require('nodemailer');
 
-const Users = require('../../db/models/user');
-const Validator = require('./Validator');
-const { unexpectedError } = require('./helper');
+const Users = require('../../../db/models/user');
+const Validator = require('../Validator');
+const { unexpectedError } = require('../helper');
 
-router.post('/register', async(req, res) => {
+router.post('/', async(req, res) => {
     const { email, password, name } = req.body;
 
-    if(Validator.init(email).isEmail().LengthMore(0)) {
+    if(Validator.init(email).isEmail()) {
         if(Validator.init(password).LengthMore(5)) {
             if(Validator.init(name).LengthMore(4)) {
                 
@@ -23,11 +22,18 @@ router.post('/register', async(req, res) => {
                         }); 
                     }
 
-                    const salt = bcrypt.genSaltSync(20);
-                    const hashedPassword = bcrypt.hashSync(salt, password);
+                    const salt = bcrypt.genSaltSync(10);
+                    const hashedPassword = bcrypt.hashSync(password, salt);
 
                     try {
-                        
+                        const newUser = await new Users({
+                            name, email, password: hashedPassword
+                        }).save();
+
+                        res.status(200).json({
+                            signup: true
+                        });
+
                     } catch (error) {
                         unexpectedError(res, error);    
                     }

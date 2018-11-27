@@ -35,7 +35,7 @@ class Validator {
     }
 
     LengthMore (cond) {
-        if(this.value.length > cond) return false;
+        if(this.value.length < cond) return false;
         else return this.methods;
     }
 }

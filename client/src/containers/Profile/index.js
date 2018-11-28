@@ -12,14 +12,17 @@ class Profile extends Component {
 
     constructor (props) {
         super(props);
-
+        
+        // create ref to get access for DOM element 
         this.form = React.createRef();
     }
 
+    // get profile when component mounted
     componentDidMount() {
         this.props.getProfile();
     }
     
+    // input[type=file] handler
     inputHandler = (e) => {
         if(e.target.files[0] && e.target.files[0].size < 20000) {
 
@@ -75,6 +78,7 @@ class Profile extends Component {
     }
 }
 
+// redux store
 export default connect(state => ({
     profile: state.profileState.profile,
     loading: state.profileState.loading,

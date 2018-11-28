@@ -21,6 +21,10 @@ app.use(session({
     saveUninitialized: true
 }));
 
+
+app.use('/static/', express.static(path.join(__dirname, 'client/build/static')));
+app.use('/client/', express.static(path.join(__dirname, 'client/build')));
+
 // Connect routes
 
 app.use('/api/auth/signup', require('./api/auth/signup/index'));
@@ -28,11 +32,8 @@ app.use('/api/auth/login', require('./api/auth/login/index'));
 app.use('/api/auth/', require('./api/auth/additionalRoute'));
 app.use('/api/users', require('./api/users'));
 
-app.use('/static/', express.static(path.join(__dirname, 'client/build/static')));
-app.use('/client/', express.static(path.join(__dirname, 'client/build')));
-
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'client/build/index.html'));
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
 });
 
 const port = process.env.PORT || 5000;

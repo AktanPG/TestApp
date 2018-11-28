@@ -11,9 +11,10 @@ import rootReducer from './store/reducers';
 import logger from './store/middleWares/logger';
 import './index.css';
 
+// create the redux store
 const store = createStore(rootReducer, applyMiddleware(logger, thunk));
-window.store = store;
-window.state = store.getState;
+
+//Connect BrowserRouter and provide store
 
 const app = (
     <BrowserRouter>
@@ -23,4 +24,5 @@ const app = (
     </BrowserRouter>
 );
 
+//Render
 ReactDOM.render( app, document.getElementById('root'));

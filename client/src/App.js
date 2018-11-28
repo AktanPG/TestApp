@@ -9,6 +9,7 @@ import Profile from './containers/Profile';
 class App extends Component {  
     render() {
         return (
+            //Just connect Routes
             <Layout>
                 <Switch>
                   <Route exact path="/" component={Profile} />

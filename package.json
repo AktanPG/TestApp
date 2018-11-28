@@ -2,9 +2,9 @@
   "name": "mplace",
   "version": "1.0.0",
   "description": "project for offers",
-  "main": "server.js",
+  "main": "index",
   "scripts": {
-    "start": "node server.js",
+    "start": "node index.js",
     "build": "npm install",
     "server": "node server",
     "heroku-postbuild": "npm install"

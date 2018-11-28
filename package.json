@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "build": "npm install",
-    "server": "node server",
-    "heroku-postbuild": "npm install",
+    "server": "node index.js",
+    "heroku-postbuild": "cd client && npm i && npm run build",
     "web": "npm run start"
   },
   "author": "KAMBI",

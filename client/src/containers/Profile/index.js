@@ -24,7 +24,7 @@ class Profile extends Component {
     
     // input[type=file] handler
     inputHandler = (e) => {
-        if(e.target.files[0] && e.target.files[0].size < 20000) {
+        if(e.target.files[0] && e.target.files[0].size < 2000000) {
 
             const fd = new FormData(this.form.current); 
             

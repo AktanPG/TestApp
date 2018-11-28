@@ -23,6 +23,7 @@ app.use(session({
 
 
 app.use('/static/', express.static(path.join(__dirname, 'client/build/static')));
+app.use('/favicon', express.static(path.join(__dirname, 'client/build/favicon.ico')));
 
 // Connect routes
 
